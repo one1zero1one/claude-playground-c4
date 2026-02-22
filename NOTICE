@@ -1,0 +1,11 @@
+claude-playground-c4
+Copyright 2025 Dani Ciulea
+
+This product includes software developed by Anthropic
+(https://github.com/anthropics/claude-plugins-official).
+
+The playground skill and its templates (code-map, concept-map, data-explorer,
+design-playground, diff-review, document-critique) are derived from Anthropic's
+official playground plugin, licensed under Apache 2.0.
+
+The c4-prep skill and the c4-architecture template are original work.
