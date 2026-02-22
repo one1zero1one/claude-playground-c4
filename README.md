@@ -44,5 +44,5 @@ The playground skill includes templates for:
 
 Apache 2.0 — see [LICENSE](LICENSE).
 
-Playground skill: Copyright 2025 Anthropic (original), modifications by Dani Ciulea.
-C4-prep skill: Copyright 2025 Dani Ciulea.
+Playground skill: Copyright 2025 Anthropic (original), modifications by Daniel Radu.
+C4-prep skill: Copyright 2025 Daniel Radu.

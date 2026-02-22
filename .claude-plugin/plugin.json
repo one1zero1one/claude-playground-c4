@@ -2,7 +2,7 @@
   "name": "claude-playground-c4",
   "description": "C4 architecture playground — interactive C4 model builder with guided scoping (L1-L3) and visual HTML explorer with drill-down navigation",
   "author": {
-    "name": "Dani Ciulea",
+    "name": "Daniel Radu",
     "url": "https://github.com/one1zero1one"
   }
 }
