@@ -1,13 +1,13 @@
 ---
 name: c4-prep
-description: Use when user wants to model a system architecture using C4, create a C4 diagram, or says "c4-prep". Guides interactive scoping through L1-L3 and outputs Structurizr workspace JSON.
+description: Use when user wants to model a system architecture using C4, create a C4 diagram, or says "c4-prep". Explores codebase or conversation context first, then guides interactive scoping through L1-L3 and outputs Structurizr workspace JSON.
 ---
 
 # C4 Architecture Prep
 
-You are guiding the user through C4 architecture modeling. You will collect architecture decisions interactively across 5 phases and produce a Structurizr-compatible workspace JSON file.
+You model the architecture of whatever the user is working on. You explore first, propose a C4 model, then refine it with the user across L1-L3 and produce Structurizr-compatible workspace JSON.
 
-**Your job**: Ask questions, collect answers, enforce guardrails, and assemble valid JSON. The user thinks about architecture; you handle the format.
+**Your job**: Explore the context, propose structure, refine through conversation, enforce guardrails, and assemble valid JSON. The user validates and corrects; you handle discovery and format.
 
 ## Internal State
 
@@ -40,11 +40,48 @@ Enforce these at all times. They are NOT suggestions — they are hard gates.
 12. L3 component breakdown is **opt-in per container**. Default is NO. Only drill in when the container has genuine internal complexity.
 13. A system with zero actors/users is invalid. Something must use it — push back if the user claims otherwise.
 
+## Phase 0: Discovery
+
+Before asking questions, explore what's already available. The user ran this skill because they want to understand something that already exists — a codebase, a system described in conversation, a design doc, or a running deployment. Your first job is to find it.
+
+### What to explore
+
+**If you're in a codebase** (working directory has code):
+- Read `README.md`, `CLAUDE.md`, `package.json`, `docker-compose.yml`, `Dockerfile`, `Makefile`, or equivalent entry points
+- Grep for API routes, database connections, message queues, external service calls
+- Check for infrastructure config: Terraform, Kubernetes manifests, CI/CD pipelines
+- Spin up Explore subagents for large codebases — one per concern (e.g., "find all external API calls", "map database schemas", "identify deployment boundaries")
+
+**If context exists in the conversation** (user has been discussing architecture, debugging, or designing):
+- Extract systems, actors, and relationships from what's already been said
+- Identify technologies mentioned, services described, data flows discussed
+
+**If the user points you at something specific** (a doc, a repo path, a URL):
+- Read it thoroughly before asking anything
+
+### Propose, don't ask from scratch
+
+After discovery, **present what you found** as a draft L1 model:
+
+> Based on the codebase, here's what I see:
+> - System: "X" — does Y
+> - Actors: A, B
+> - External systems: C, D
+> - Key relationships: A uses X via HTTPS, X stores data in C
+>
+> Does this match your understanding? What's wrong or missing?
+
+This saves the user from answering questions you could have answered yourself. They correct and refine; they don't start from zero.
+
+### When discovery finds nothing
+
+If there's no codebase, no prior context, and no document to read, fall back to asking directly (Phase 1 questions below). But this should be the exception, not the default.
+
 ## Phase 1: L1 Context
 
-Collect the system context — who uses it, what it talks to.
+Refine the system context — who uses it, what it talks to. If Phase 0 produced a draft, validate and fill gaps. If not, collect from scratch.
 
-### Ask
+### Ask (only what you don't already know)
 
 1. **System name** and a one-sentence description. What is its core purpose?
 2. **Actors/personas**: Who interacts with it? For each, get: name, description.

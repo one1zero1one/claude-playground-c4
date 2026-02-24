@@ -4,7 +4,7 @@ A [Claude Code plugin](https://docs.anthropic.com/en/docs/claude-code) that mode
 
 Three skills form a pipeline:
 
-1. **`c4-prep`** models your architecture through conversation (L1 Context, L2 Containers, L3 Components), enforces C4 guardrails, and outputs [Structurizr workspace JSON](https://github.com/structurizr/json).
+1. **`c4-prep`** explores your codebase or conversation context, proposes a C4 model (L1 Context, L2 Containers, L3 Components), and refines it with you. Outputs [Structurizr workspace JSON](https://github.com/structurizr/json).
 
 2. **`playground`** turns that JSON into a self-contained HTML explorer with drag-and-drop nodes, drill-down across levels, and position persistence.
 
@@ -15,52 +15,53 @@ Three skills form a pipeline:
 (model)                         (explore)       (render PNGs)
 ```
 
-## Hello World
+## Example
 
-Model a todo app, explore it, render it:
+You're deep in a codebase and need to step back and see the system. Run `/c4-prep` and Claude explores the project before asking you anything:
 
 ```
 You: /c4-prep
 
-Claude: What system are we modeling?
+Claude: [reads README, docker-compose.yml, scans routes and DB connections]
 
-You: A todo app. One user ("Developer"), a React web UI,
-     a Node.js API, and a SQLite database.
+Claude: Here's what I see:
+        - System: "Acme API" — order management platform
+        - Actors: Customer (mobile app), Admin (dashboard)
+        - Containers: React SPA, Express API, PostgreSQL, Redis cache,
+          RabbitMQ for async jobs
+        - External: Stripe (payments), SendGrid (email)
 
-Claude: [walks through L1 → L2, asks clarifying questions]
-Claude: Saved to todo-app.json
+        Does this match? What's wrong or missing?
+
+You: The worker service is missing — it consumes from RabbitMQ.
+
+Claude: [adds Worker container, refines relationships, walks through L2 → L3]
+Claude: Saved to acme-api.json
 ```
 
-```
-You: Make a playground from todo-app.json
-
-Claude: [writes todo-app.html — open it in your browser]
-```
+Explore it interactively:
 
 ```
-You: /c4-cards todo-app.json
+You: Make a playground from acme-api.json
+
+Claude: [writes acme-api.html — open in browser, drill down L1 → L2 → L3]
+```
+
+Render PNG cards for documentation or slides:
+
+```
+You: /c4-cards acme-api.json
 
 Claude: Which levels? → All
         Style? → Clean minimal
         Aspect ratio? → 16:9
 
-        [ASCII preview]
-
-         ┌───────────┐
-         │ Developer  │
-         └─────┬──────┘
-               │ Uses (HTTPS)
-               ▼
-        ┌────────────┐   ┌────────────┐   ┌────────────┐
-        │  Web UI    │──▶│    API     │──▶│  Database   │
-        │  (React)   │   │ (Node.js)  │   │  (SQLite)   │
-        └────────────┘   └────────────┘   └────────────┘
-
-        Looks right? → Yes
+        [ASCII preview, you confirm]
 
 Claude: Generated:
         - l1-context.png (185 KB)
-        - l2-containers.png (243 KB)
+        - l2-containers.png (312 KB)
+        - l3-api-components.png (278 KB)
 ```
 
 ## Install
@@ -82,7 +83,7 @@ claude plugin add one1zero1one/claude-playground-c4
 
 ### c4-prep
 
-Walks you through C4 modeling level by level. Enforces guardrails: 10-12 items per view, labeled relationships, runtime boundaries only. Outputs Structurizr-compatible JSON you can also load in [Structurizr](https://structurizr.com/) or [LikeC4](https://likec4.dev/).
+Explores your codebase, conversation context, or design docs first — then proposes a C4 model for you to refine. Spins up subagents to scan large projects in parallel. Enforces guardrails: 10-12 items per view, labeled relationships, runtime boundaries only. Outputs Structurizr-compatible JSON you can also load in [Structurizr](https://structurizr.com/) or [LikeC4](https://likec4.dev/).
 
 ### playground
 
