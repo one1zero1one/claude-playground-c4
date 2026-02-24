@@ -1,6 +1,6 @@
 {
   "name": "claude-playground-c4",
-  "description": "C4 architecture playground — interactive C4 model builder with guided scoping (L1-L3) and visual HTML explorer with drill-down navigation",
+  "description": "C4 architecture toolkit — interactive model builder (L1-L3), visual HTML explorer with drill-down, and PNG diagram generation via Gemini",
   "author": {
     "name": "Daniel Radu",
     "url": "https://github.com/one1zero1one"

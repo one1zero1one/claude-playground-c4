@@ -8,4 +8,5 @@ The playground skill and its templates (code-map, concept-map, data-explorer,
 design-playground, diff-review, document-critique) are derived from Anthropic's
 official playground plugin, licensed under Apache 2.0.
 
-The c4-prep skill and the c4-architecture template are original work.
+The c4-prep skill, c4-architecture template, and c4-cards skill (including the
+Nano Banana image generation script) are original work.
