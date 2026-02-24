@@ -107,6 +107,3 @@ The playground skill derives from [Anthropic's official playground plugin](https
 ## License
 
 Apache 2.0 — see [LICENSE](LICENSE).
-
-Playground skill: Copyright 2025 Anthropic (original), modifications by Daniel Radu.
-c4-prep, c4-cards: Copyright 2025 Daniel Radu.
