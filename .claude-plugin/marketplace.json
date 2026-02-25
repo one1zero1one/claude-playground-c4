@@ -1,0 +1,20 @@
+{
+  "name": "one1zero1one",
+  "description": "Personal Claude Code plugins by Daniel Radu",
+  "owner": {
+    "name": "Daniel Radu",
+    "email": "radu.daniel@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "claude-playground-c4",
+      "description": "C4 architecture toolkit — interactive model builder (L1-L3), visual HTML explorer with drill-down, and PNG diagram generation via Gemini",
+      "version": "1.0.0",
+      "source": "./",
+      "author": {
+        "name": "Daniel Radu",
+        "email": "radu.daniel@gmail.com"
+      }
+    }
+  ]
+}
