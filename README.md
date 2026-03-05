@@ -2,7 +2,7 @@
 
 A [Claude Code plugin](https://docs.anthropic.com/en/docs/claude-code) that models, explores, and renders C4 architecture diagrams.
 
-Three skills form a pipeline:
+Five skills form a pipeline:
 
 1. **`c4-prep`** explores your codebase or conversation context, proposes a C4 model (L1 Context, L2 Containers, L3 Components), and refines it with you. Outputs [Structurizr workspace JSON](https://github.com/structurizr/json).
 
@@ -10,9 +10,15 @@ Three skills form a pipeline:
 
 3. **`c4-cards`** renders publication-ready PNG diagrams from the same JSON using Google Gemini (Nano Banana Pro).
 
+4. **`c4-mermaid`** renders lightweight Mermaid.js C4 diagrams in a tabbed HTML file. No API keys, no dependencies — just HTML and the Mermaid CDN.
+
+5. **`c4-excalidraw`** renders editable Excalidraw files you can open, rearrange, and annotate in excalidraw.com or the desktop app.
+
 ```
-/c4-prep  →  workspace JSON  →  /playground  →  /c4-cards
-(model)                         (explore)       (render PNGs)
+/c4-prep  →  workspace JSON  →  /playground     (interactive SVG)
+                               →  /c4-cards      (PNG via Gemini)
+                               →  /c4-mermaid    (Mermaid HTML)
+                               →  /c4-excalidraw (editable Excalidraw)
 ```
 
 ## Example
@@ -77,7 +83,7 @@ claude plugin add one1zero1one/claude-playground-c4
 - A **Google API key**: set `GOOGLE_API_KEY` or `GEMINI_API_KEY` ([get one](https://aistudio.google.com/apikey))
 - **uv**: runs the Python script with dependencies on the fly ([install](https://docs.astral.sh/uv/getting-started/installation/))
 
-`c4-prep` and `playground` need nothing beyond Claude Code.
+`c4-prep`, `playground`, `c4-mermaid`, and `c4-excalidraw` need nothing beyond Claude Code. (c4-excalidraw optionally uses the excalidraw-diagram skill's render script for PNG validation — without it, you just open the files in excalidraw.com.)
 
 ## Skills
 
@@ -100,6 +106,33 @@ Generates PNG cards in three styles:
 | **Hand-drawn sketch** | Early discussions, whiteboard replacement |
 
 Aspect ratios: 16:9 (slides), 4:3 (docs), 1:1 (social). Tries Gemini Pro first; falls back to Flash on timeout. `uv` handles all Python dependencies — nothing to install.
+
+### c4-mermaid
+
+Converts Structurizr workspace JSON into Mermaid.js C4 diagrams — `C4Context`, `C4Container`, `C4Component` — wrapped in a single tabbed HTML file. Respects dark/light mode, works on mobile, prints cleanly. Zero dependencies beyond the Mermaid CDN. Good for quick sharing, embedding in docs, or when you don't need the interactivity of the playground or the polish of PNG cards.
+
+```
+You: /c4-mermaid acme-api.json
+
+Claude: Created: acme-api-c4-mermaid.html
+        - L1 Context: 2 people, 3 systems (2 external)
+        - L2 Containers: 5 containers
+        Open in any browser.
+```
+
+### c4-excalidraw
+
+Generates `.excalidraw` JSON files — one per C4 level — that you can open and edit in [excalidraw.com](https://excalidraw.com) or the desktop app. Drag nodes around, add annotations, export to PNG/SVG. Uses C4-standard colors (blue for internal, gray for external). If the excalidraw-diagram skill is installed, automatically renders to PNG and validates layout.
+
+```
+You: /c4-excalidraw acme-api.json
+
+Claude: Which levels? → All
+        Created:
+        - acme-api-c4-context.excalidraw
+        - acme-api-c4-containers.excalidraw
+        Open in excalidraw.com to view and edit.
+```
 
 ## Origin
 
